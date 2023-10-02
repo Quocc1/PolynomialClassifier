@@ -1,5 +1,4 @@
 # ------------------------- Thư Viện ------------------------- #
-import os
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -9,7 +8,6 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error
 
 # ------------------------- Biến Toàn Cục ------------------------- #
-DATA_URL = './data/'
 df = None
 d = None
 t = None
@@ -28,7 +26,10 @@ metrics = None
 # Trả về một dataframe
 @st.cache_data
 def load_data(file_name):
-    df = pd.read_csv(DATA_URL + file_name)
+    if file_name == 'A.csv':
+        df = pd.read_csv('https://drive.google.com/u/1/uc?id=1qZ0O5iUHzZ0AzqGQpm5JxDlwmFEVTXpp&export=download')
+    else:
+        df = pd.read_csv('https://drive.google.com/u/1/uc?id=1tZKDCKpEzI9ZPxa7il64vxIIdbtpsW2e&export=download')
     return df
 
 # 2. Hàm tạo ra ma trận giá dùng để dự đoán X và ma trận giá thực tế T
@@ -120,10 +121,7 @@ def SplitData(data, column, test_size):
 st.title('Dự báo chứng khoán bằng Polynomial Classifier')
 
 # Lấy tên của các tập dữ liệu
-file_names = []
-for root, dirs, files in os.walk(DATA_URL):
-    for file in files:
-        file_names.append(file)
+file_names = ['A.csv', 'HSI.csv']
 
 # Chọn tập dữ liệu
 selected_file_name = st.selectbox("Chọn tập dữ liệu:", file_names)
